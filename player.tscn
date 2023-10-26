@@ -1,0 +1,118 @@
+[gd_scene load_steps=17 format=3 uid="uid://o56swjkw2mym"]
+
+[ext_resource type="ArrayMesh" uid="uid://cp1laq3nc2ext" path="res://Models/Weapon/shotgun.obj" id="1_gais3"]
+[ext_resource type="Script" path="res://player.gd" id="1_pnj8u"]
+[ext_resource type="PackedScene" uid="uid://dxljhebm25lrg" path="res://Models/Weapon/fps_pistol_animated.glb" id="3_t5mf5"]
+[ext_resource type="PackedScene" uid="uid://2wv22mx7g31k" path="res://Models/Weapon/fps_pistol_animated.tscn" id="4_sc5oy"]
+[ext_resource type="AudioStream" uid="uid://dblqxe0jkd40q" path="res://Audio/pistolfire2.wav" id="5_ve15w"]
+[ext_resource type="AudioStream" uid="uid://25mm6a7sxaub" path="res://Audio/pistolReloadB.wav" id="6_1i6uw"]
+[ext_resource type="AudioStream" uid="uid://bltk3wq1lj10f" path="res://Audio/HideDefault.wav" id="7_vu5p4"]
+[ext_resource type="AudioStream" uid="uid://bfyi8p502vlom" path="res://Audio/pistolready.wav" id="8_lpxr4"]
+[ext_resource type="AudioStream" uid="uid://cpn4hw8dru7wi" path="res://Audio/pistolReload.wav" id="9_p87lx"]
+[ext_resource type="AudioStream" uid="uid://bi6q8wbbvyot1" path="res://Audio/footsteps-4.wav" id="10_b8yvg"]
+[ext_resource type="AudioStream" uid="uid://c3mvqdng6hdsn" path="res://Audio/dryfire.wav" id="11_a8i4g"]
+[ext_resource type="AudioStream" uid="uid://b2skol1xwjkqf" path="res://Audio/melee.wav" id="12_uwhav"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kekq6"]
+
+[sub_resource type="Animation" id="Animation_e1qxx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(2.08165e-12, 1.06614, 0.441086)]
+}
+
+[sub_resource type="Animation" id="Animation_lmhir"]
+resource_name = "head_bob"
+length = 1.00002
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(2.08165e-12, 1.06614, 0.441086), Vector3(2.08165e-12, 1.35, 0.441), Vector3(2.08165e-12, 1.06614, 0.441086)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sqpq0"]
+_data = {
+"RESET": SubResource("Animation_e1qxx"),
+"head_bob": SubResource("Animation_lmhir")
+}
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_pnj8u")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.24073, 0, 0, 0, 1.506, 0, 0, 0, 0.773284, 0, -0.428111, 0)
+shape = SubResource("CapsuleShape3D_kekq6")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.06614, 0.441086)
+current = true
+
+[node name="Shotgun" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(-15, 5.2318e-15, 2.26494e-06, 5.2318e-15, 15, -5.2318e-15, -2.26494e-06, -5.2318e-15, -15, 0.784262, -0.674926, -1.4166)
+visible = false
+mesh = ExtResource("1_gais3")
+skeleton = NodePath("../..")
+
+[node name="Muzzle" type="Node3D" parent="Camera3D"]
+transform = Transform3D(-1, 3.48787e-16, -8.74228e-08, 3.48787e-16, 1, -3.48787e-16, 8.74228e-08, -3.48787e-16, -1, -1.12762e-09, -0.645, -2.80192)
+
+[node name="fps_pistol_animated" parent="Camera3D" instance=ExtResource("3_t5mf5")]
+transform = Transform3D(-0.027281, 0, -0.000296176, 0, 0.0272826, 0, 0.000296176, 0, -0.027281, 0.245151, -1.06614, -1.62025)
+visible = false
+
+[node name="fps_pistol_animated2" parent="Camera3D" instance=ExtResource("4_sc5oy")]
+transform = Transform3D(-0.027281, 0, -0.000296176, 0, 0.0272826, 0, 0.000296176, 0, -0.027281, 0.0129807, -1.06614, -1.62025)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera3D"]
+libraries = {
+"": SubResource("AnimationLibrary_sqpq0")
+}
+
+[node name="ShootSound" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(-0.980378, 0, -0.197127, 0, 1, 0, 0.197127, 0, -0.980378, 0.227299, 0.391247, -2.78669)
+stream = ExtResource("5_ve15w")
+
+[node name="ReloadSound2" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.229668, 0.250098, -1.70672)
+stream = ExtResource("6_1i6uw")
+
+[node name="HideSound" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.732708)
+stream = ExtResource("7_vu5p4")
+
+[node name="UnhideSound" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.808723)
+stream = ExtResource("8_lpxr4")
+
+[node name="ReloadSound" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.213471, 0.436393, -2.26822)
+stream = ExtResource("9_p87lx")
+
+[node name="FootstepSound" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.40034, 0)
+stream = ExtResource("10_b8yvg")
+
+[node name="DryFire" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("11_a8i4g")
+
+[node name="MeleeSound" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.74379)
+stream = ExtResource("12_uwhav")

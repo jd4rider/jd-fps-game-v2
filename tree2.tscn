@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://11mgmsktu7mk"]
+
+[ext_resource type="ArrayMesh" uid="uid://dtg5gxwck2dg7" path="res://Models/Environment/Tree_1.obj" id="1_d7vcg"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2tsi7"]
+height = 6.86492
+
+[node name="Tree4" type="MeshInstance3D"]
+transform = Transform3D(1.06872, 0, 0, 0, 1.29307, 0, 0, 0, 0.998729, 0, 0, 0)
+mesh = ExtResource("1_d7vcg")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.895126, 0, 0, 0, 1, 1.64882, 2.93602, -1.14478)
+shape = SubResource("CapsuleShape3D_2tsi7")

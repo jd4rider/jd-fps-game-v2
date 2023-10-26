@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkuxdour5af1t"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_tnubp"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_bijjr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u2meq"]
+albedo_color = Color(1, 0.0509804, 0.0509804, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1lj8k"]
+
+[node name="Enemy" type="CharacterBody3D"]
+script = ExtResource("1_tnubp")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.25, 2.08165e-12)
+mesh = SubResource("CapsuleMesh_bijjr")
+surface_material_override/0 = SubResource("StandardMaterial3D_u2meq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.23731, 0)
+shape = SubResource("CapsuleShape3D_1lj8k")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
